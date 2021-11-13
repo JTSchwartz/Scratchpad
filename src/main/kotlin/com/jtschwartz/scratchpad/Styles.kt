@@ -13,7 +13,7 @@ class Styles: Stylesheet() {
 	init {
 		textArea {
 			font = jetBrainsMono
-			borderColor += box(Color.BLACK, Color.TRANSPARENT, Color.TRANSPARENT, Color.TRANSPARENT)
+			borderColor += box(Color.GRAY, Color.TRANSPARENT, Color.TRANSPARENT, Color.TRANSPARENT)
 		}
 		
 		textArea and focused {
