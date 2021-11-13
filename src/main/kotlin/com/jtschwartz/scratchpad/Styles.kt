@@ -1,22 +1,23 @@
 package com.jtschwartz.scratchpad
 
-import javafx.scene.text.FontWeight
-import tornadofx.Stylesheet
-import tornadofx.box
-import tornadofx.cssclass
-import tornadofx.px
+import javafx.scene.paint.Color
+import tornadofx.*
 
-class Styles : Stylesheet() {
-    companion object {
-        val heading by cssclass()
-        val textArea by cssclass()
-    }
-
-    init {
-        label and heading {
-            padding = box(10.px)
-            fontSize = 20.px
-            fontWeight = FontWeight.BOLD
-        }
-    }
+class Styles: Stylesheet() {
+	companion object {
+		val root by cssclass()
+		val textArea by cssclass()
+		val jetBrainsMono = loadFont("/fonts/JetBrainsMono-Regular.ttf", 10.0)!!
+	}
+	
+	init {
+		textArea {
+			font = jetBrainsMono
+			borderColor += box(Color.BLACK, Color.TRANSPARENT, Color.TRANSPARENT, Color.TRANSPARENT)
+		}
+		
+		textArea and focused {
+			backgroundColor += c(Color.WHITE.css)
+		}
+	}
 }

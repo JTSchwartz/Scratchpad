@@ -5,6 +5,7 @@ plugins {
 group = "com.jtschwartz"
 version = "0.0.1"
 
+val kotlinVersion: String by rootProject
 val tornadoFxVersion: String by rootProject
 
 repositories {
@@ -16,9 +17,10 @@ application {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
     implementation("no.tornado:tornadofx:$tornadoFxVersion")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.5.31")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
 }
 
 tasks {
