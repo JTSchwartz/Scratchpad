@@ -37,15 +37,15 @@ class MainView: View(Config.TITLE) {
 									}
 								}
 							}
-							
 							field(Constants.REPLACE) {
 								textfield(replace) {
 									onKeyReleased = EventHandler { key ->
 										key.ifEnter {
-											content.value = if (isRegexEnabled.value) {
-												content.value.replace(search.value.toRegex(), replace.value)
+											content.value = if (isSelectionControlEnabled.value) {
+												val bounds = textArea.selection
+												content.value.replaceRange(bounds.start, bounds.end, findAndReplace(textArea.selectedText))
 											} else {
-												content.value.replace(search.value, replace.value, !isCaseSensitivityEnabled.value)
+												findAndReplace(content.value)
 											}
 										}
 									}
@@ -83,6 +83,14 @@ class MainView: View(Config.TITLE) {
 			val screenBounds = Screen.getPrimary().bounds
 			prefHeight = screenBounds.height * Config.WINDOW_HEIGHT_RATIO
 			prefWidth = screenBounds.width * Config.WINDOW_WIDTH_RATIO
+		}
+	}
+	
+	private fun findAndReplace(original: String): String {
+		return if (isRegexEnabled.value) {
+			original.replace(search.value.toRegex(), replace.value)
+		} else {
+			original.replace(search.value, replace.value, !isCaseSensitivityEnabled.value)
 		}
 	}
 }
