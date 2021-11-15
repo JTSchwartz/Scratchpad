@@ -3,7 +3,7 @@ plugins {
     application
 }
 group = "com.jtschwartz"
-version = "0.0.1"
+version = "1.0.0"
 
 val kotlinVersion: String by rootProject
 val tornadoFxVersion: String by rootProject
