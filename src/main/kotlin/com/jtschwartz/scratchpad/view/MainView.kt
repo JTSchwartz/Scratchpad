@@ -10,16 +10,20 @@ import javafx.event.EventHandler
 import javafx.scene.control.TextArea
 import javafx.stage.Screen
 import tornadofx.*
+import java.io.File
 
 class MainView: View(Config.TITLE) {
 	private val search = SimpleStringProperty()
 	private val replace = SimpleStringProperty()
 	private val content = SimpleStringProperty()
+	
 	private val isRegexEnabled = SimpleBooleanProperty(false)
 	private val isCaseSensitivityEnabled = SimpleBooleanProperty(false)
 	private val isSelectionControlEnabled = SimpleBooleanProperty(false)
-	private lateinit var textArea: TextArea
 	
+	private val file = File(Config.FILE_PATH)
+	
+	private lateinit var textArea: TextArea
 	
 	override val root =
 		vbox {
@@ -67,6 +71,7 @@ class MainView: View(Config.TITLE) {
 			textarea(content) {
 				textArea = this
 				addClass(Styles.textArea)
+				onKeyReleased = EventHandler { file.writeText(content.value ?: "") }
 			}.also {
 				it.prefWidthProperty().bind(this.widthProperty())
 				it.prefHeightProperty().bind(this.heightProperty())
@@ -79,6 +84,8 @@ class MainView: View(Config.TITLE) {
 			prefHeight = screenBounds.height * Config.WINDOW_HEIGHT_RATIO
 			prefWidth = screenBounds.width * Config.WINDOW_WIDTH_RATIO
 		}
+		
+		content.value = file.readText()
 	}
 	
 	private fun findAndReplace() = if (isSelectionControlEnabled.value) {
