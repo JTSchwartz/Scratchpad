@@ -41,12 +41,7 @@ class MainView: View(Config.TITLE) {
 								textfield(replace) {
 									onKeyReleased = EventHandler { key ->
 										key.ifEnter {
-											content.value = if (isSelectionControlEnabled.value) {
-												val bounds = textArea.selection
-												content.value.replaceRange(bounds.start, bounds.end, findAndReplace(textArea.selectedText))
-											} else {
-												findAndReplace(content.value)
-											}
+											content.value = findAndReplace()
 										}
 									}
 								}
@@ -86,11 +81,16 @@ class MainView: View(Config.TITLE) {
 		}
 	}
 	
-	private fun findAndReplace(original: String): String {
-		return if (isRegexEnabled.value) {
-			original.replace(search.value.toRegex(), replace.value)
-		} else {
-			original.replace(search.value, replace.value, !isCaseSensitivityEnabled.value)
-		}
+	private fun findAndReplace() = if (isSelectionControlEnabled.value) {
+		val bounds = textArea.selection
+		content.value.replaceRange(bounds.start, bounds.end, handleRegexReplacement(textArea.selectedText))
+	} else {
+		handleRegexReplacement(content.value)
+	}
+	
+	private fun handleRegexReplacement(original: String) = if (isRegexEnabled.value) {
+		original.replace(search.value.toRegex(), replace.value)
+	} else {
+		original.replace(search.value, replace.value, !isCaseSensitivityEnabled.value)
 	}
 }
