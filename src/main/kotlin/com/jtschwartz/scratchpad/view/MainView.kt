@@ -3,6 +3,7 @@ package com.jtschwartz.scratchpad.view
 import com.jtschwartz.scratchpad.Styles
 import com.jtschwartz.scratchpad.config.Config
 import com.jtschwartz.scratchpad.config.Constants
+import com.jtschwartz.scratchpad.model.SavedContent
 import com.jtschwartz.scratchpad.utils.ifEnter
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
@@ -10,7 +11,7 @@ import javafx.event.EventHandler
 import javafx.scene.control.TextArea
 import javafx.stage.Screen
 import tornadofx.*
-import java.io.File
+import java.io.*
 
 class MainView: View(Config.TITLE) {
 	private val search = SimpleStringProperty()
@@ -71,7 +72,6 @@ class MainView: View(Config.TITLE) {
 			textarea(content) {
 				textArea = this
 				addClass(Styles.textArea)
-				onKeyReleased = EventHandler { file.writeText(content.value ?: "") }
 			}.also {
 				it.prefWidthProperty().bind(this.widthProperty())
 				it.prefHeightProperty().bind(this.heightProperty())
@@ -85,7 +85,16 @@ class MainView: View(Config.TITLE) {
 			prefWidth = screenBounds.width * Config.WINDOW_WIDTH_RATIO
 		}
 		
-		content.value = file.readText()
+		if (file.exists()) {
+			ObjectInputStream(FileInputStream(Config.FILE_PATH)).use {
+				val obj = it.readObject()
+				if (obj is SavedContent) {
+					search.value = obj.search
+					replace.value = obj.replace
+					content.value = obj.content
+				}
+			}
+		}
 	}
 	
 	private fun findAndReplace() = if (isSelectionControlEnabled.value) {
@@ -99,5 +108,13 @@ class MainView: View(Config.TITLE) {
 		original.replace(search.value.toRegex(), replace.value)
 	} else {
 		original.replace(search.value, replace.value, !isCaseSensitivityEnabled.value)
+	}
+	
+	override fun onDock() {
+		currentWindow?.setOnCloseRequest {
+			ObjectOutputStream(FileOutputStream(Config.FILE_PATH)).use {
+				it.writeObject(SavedContent(search.value ?: "", replace.value ?: "", content.value ?: ""))
+			}
+		}
 	}
 }
