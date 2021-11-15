@@ -71,7 +71,6 @@ class MainView: View(Config.TITLE) {
 			}
 			textarea(content) {
 				textArea = this
-				addClass(Styles.textArea)
 			}.also {
 				it.prefWidthProperty().bind(this.widthProperty())
 				it.prefHeightProperty().bind(this.heightProperty())
