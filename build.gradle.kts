@@ -6,17 +6,19 @@ buildscript {
 	}
 }
 
+val kotlinVersion: String by rootProject
+val tornadoFxVersion: String by rootProject
+
 plugins {
 	application
-	kotlin("jvm") version "1.4.32"
+	kotlin("jvm") version "1.5.31"
 	id("no.tornado.fxlauncher") version "1.0.20"
+	id("org.openjfx.javafxplugin") version "0.0.10"
 }
 
 group = "com.jtschwartz"
 version = "1.0.0"
 
-val kotlinVersion: String by rootProject
-val tornadoFxVersion: String by rootProject
 
 repositories {
 	mavenCentral()
@@ -24,6 +26,11 @@ repositories {
 
 application {
 	mainClassName = "com.jtschwartz.scratchpad.ScratchpadKt"
+}
+
+javafx {
+	version = "11.0.2"
+	modules("javafx.controls")
 }
 
 configure<FXLauncherExtension> {
@@ -45,10 +52,10 @@ dependencies {
 
 tasks {
 	compileKotlin {
-		kotlinOptions.jvmTarget = "1.8"
+		kotlinOptions.jvmTarget = "11"
 	}
 	compileTestKotlin {
-		kotlinOptions.jvmTarget = "1.8"
+		kotlinOptions.jvmTarget = "11"
 	}
 }
 
