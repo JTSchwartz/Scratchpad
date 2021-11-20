@@ -6,6 +6,7 @@ buildscript {
 	}
 }
 
+val applicationVersion: String by rootProject
 val kotlinVersion: String by rootProject
 val tornadoFxVersion: String by rootProject
 
@@ -17,7 +18,7 @@ plugins {
 }
 
 group = "com.jtschwartz"
-version = "1.0.3"
+version = applicationVersion
 
 
 repositories {
@@ -37,7 +38,7 @@ configure<FXLauncherExtension> {
 	applicationVendor = "Jacob Schwartz (jacob@jtschwartz.com)"
 	applicationUrl = "https://storage.googleapis.com/jts-scratchpad-bucket"
 	applicationMainClass = application.mainClassName
-	applicationVersion = "1.0.3"
+	applicationVersion = applicationVersion
 	applicationTitle = "Scratchpad"
 	applicationName = "Scratchpad"
 }

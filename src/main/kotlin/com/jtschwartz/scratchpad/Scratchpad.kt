@@ -13,6 +13,7 @@ import javafx.stage.Screen
 import tornadofx.*
 import java.io.*
 
+
 fun main() {
 	launch<Scratchpad>()
 }
@@ -90,16 +91,21 @@ class MainView: View(Config.TITLE) {
 			prefWidth = screenBounds.width * Config.WINDOW_WIDTH_RATIO
 		}
 		
-		if (file.exists()) {
-			ObjectInputStream(FileInputStream(Config.FILE_PATH)).use {
-				val obj = it.readObject()
-				if (obj is SavedContent) {
-					search.value = obj.search
-					replace.value = obj.replace
-					content.value = obj.content
+		try {
+			if (file.exists()) {
+				ObjectInputStream(FileInputStream(Config.FILE_PATH)).use {
+					val obj = it.readObject()
+					if (obj is SavedContent) {
+						search.value = obj.search
+						replace.value = obj.replace
+						content.value = obj.content
+						isRegexEnabled.value = obj.isRegexEnabled
+						isCaseSensitivityEnabled.value = obj.isCaseSensitivityEnabled
+						isSelectionControlEnabled.value = obj.isSelectionControlEnabled
+					}
 				}
 			}
-		}
+		} catch (e: InvalidClassException) {}
 	}
 	
 	private fun findAndReplace() = if (isSelectionControlEnabled.value) {
@@ -118,7 +124,16 @@ class MainView: View(Config.TITLE) {
 	override fun onDock() {
 		currentWindow?.setOnCloseRequest {
 			ObjectOutputStream(FileOutputStream(Config.FILE_PATH)).use {
-				it.writeObject(SavedContent(search.value ?: "", replace.value ?: "", content.value ?: ""))
+				it.writeObject(
+					SavedContent(
+						search.value ?: "",
+						replace.value ?: "",
+						content.value ?: "",
+						isRegexEnabled.value,
+						isCaseSensitivityEnabled.value,
+						isSelectionControlEnabled.value
+					            )
+				              )
 			}
 		}
 	}
