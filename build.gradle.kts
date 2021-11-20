@@ -17,7 +17,7 @@ plugins {
 }
 
 group = "com.jtschwartz"
-version = "1.0.0"
+version = "1.0.3"
 
 
 repositories {
@@ -37,7 +37,7 @@ configure<FXLauncherExtension> {
 	applicationVendor = "Jacob Schwartz (jacob@jtschwartz.com)"
 	applicationUrl = "https://storage.googleapis.com/jts-scratchpad-bucket"
 	applicationMainClass = application.mainClassName
-	applicationVersion = "1.0.2"
+	applicationVersion = "1.0.3"
 	applicationTitle = "Scratchpad"
 	applicationName = "Scratchpad"
 }

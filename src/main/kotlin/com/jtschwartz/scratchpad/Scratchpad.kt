@@ -8,15 +8,16 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.event.EventHandler
 import javafx.scene.control.TextArea
+import javafx.scene.image.Image
 import javafx.stage.Screen
 import tornadofx.*
 import java.io.*
 
-fun main(args: Array<String>) {
+fun main() {
 	launch<Scratchpad>()
 }
 
-class Scratchpad: App(MainView::class, Styles::class)
+class Scratchpad: App(Image("images/scratchpad.png"), MainView::class, Styles::class)
 
 class MainView: View(Config.TITLE) {
 	private val search = SimpleStringProperty()
